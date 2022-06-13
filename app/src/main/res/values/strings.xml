@@ -4,4 +4,7 @@
     <string name="sign_up_label">Sign Up</string>
     <string name="password_label">password</string>
     <string name="username_label">username</string>
+    <string name="back4app_server_url">https://parseapi.back4app.com/</string>
+    <string name="back4app_app_id">dxM81CXf9Ex7ZQ5gmG0WudkUXStPE0KGyCFI7ECd</string>
+    <string name="back4app_client_key">K2EWQkxTUku11NSHlh3DdG16IefOqG4w1rKpcoYQ</string>
 </resources>
