@@ -17,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
 
     private Button btnLogout;
-    private Button btnPost;
+    private Button btnPostActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,8 +36,8 @@ public class MainActivity extends AppCompatActivity {
                 logoutUser();
             }
         });
-        btnPost = binding.btnPost;
-        btnPost.setOnClickListener(new View.OnClickListener() {
+        btnPostActivity = binding.btnPostActivity;
+        btnPostActivity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 goPostActivity();
