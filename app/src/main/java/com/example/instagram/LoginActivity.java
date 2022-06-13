@@ -2,14 +2,22 @@ package com.example.instagram;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.instagram.databinding.LoginActivityBinding;
+import com.parse.LogInCallback;
+import com.parse.ParseException;
+import com.parse.ParseUser;
 
 public class LoginActivity extends AppCompatActivity {
+
+    public static final String TAG = "LoginActivity";
 
     private LoginActivityBinding binding;
 
@@ -22,6 +30,10 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_activity);
+
+        if(ParseUser.getCurrentUser() != null){
+            goMainActivity();
+        }
 
         // Set up view binding
         binding = LoginActivityBinding.inflate(getLayoutInflater());
@@ -45,6 +57,22 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void loginUser(String username, String password) {
+        ParseUser.logInInBackground(username, password, new LogInCallback() {
+            @Override
+            public void done(ParseUser user, ParseException e) {
+                if(e != null){
+                    Log.e(TAG, "Error in login: ", e);
+                    Toast.makeText(LoginActivity.this, "Invalid Credentials", Toast.LENGTH_LONG);
+                    return;
+                }
+                goMainActivity();
+            }
+        });
+    }
 
+    private void goMainActivity() {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+        finish();
     }
 }
