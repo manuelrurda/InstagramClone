@@ -62,7 +62,7 @@ public class LoginActivity extends AppCompatActivity {
             public void done(ParseUser user, ParseException e) {
                 if(e != null){
                     Log.e(TAG, "Error in login: ", e);
-                    Toast.makeText(LoginActivity.this, "Invalid Credentials", Toast.LENGTH_LONG);
+                    Toast.makeText(LoginActivity.this, "Invalid Credentials", Toast.LENGTH_LONG).show();
                     return;
                 }
                 goMainActivity();
