@@ -3,6 +3,7 @@ package com.example.instagram;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -31,9 +32,10 @@ public class MainActivity extends AppCompatActivity {
     private Button btnLogout;
     private Button btnPostActivity;
     private RecyclerView rvPosts;
+    private SwipeRefreshLayout swipeRefresh;
 
-    protected PostsAdapter adapter;
-    protected List<Post> allPosts;
+    private PostsAdapter adapter;
+    private List<Post> allPosts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,14 +60,28 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //RecyclerView setup
+        swipeRefresh = binding.swipeRefresh;
+        swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {fetchPostsAsync();}
+        });
+
+        setRecyclerView();
+        queryPosts();
+    }
+
+    private void fetchPostsAsync() {
+        adapter.clear();
+        queryPosts();
+        swipeRefresh.setRefreshing(false);
+    }
+
+    private void setRecyclerView() {
         rvPosts = binding.rvPosts;
         allPosts = new ArrayList<>();
         adapter = new PostsAdapter(this, allPosts);
         rvPosts.setAdapter(adapter);
         rvPosts.setLayoutManager(new LinearLayoutManager(this));
-
-        queryPosts();
     }
 
     private void goPostActivity() {
