@@ -37,7 +37,6 @@ import java.util.List;
 public class PostActivity extends AppCompatActivity {
 
     public static final String TAG = "PostActivity";
-    private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 15;
 
     private ActivityPostBinding binding;
 
@@ -54,7 +53,6 @@ public class PostActivity extends AppCompatActivity {
             new ActivityResultCallback<ActivityResult>() {
                 @Override
                 public void onActivityResult(ActivityResult result) {
-                    Log.d(TAG, "onActivityResult:" + result.getData().toString());
                     if (result.getResultCode() == Activity.RESULT_OK) {
                         Bitmap takenImage = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
                         ivImage.setImageBitmap(takenImage);
@@ -96,8 +94,6 @@ public class PostActivity extends AppCompatActivity {
                 launchCamera();
             }
         });
-
-        queryPosts();
     }
 
 
@@ -144,24 +140,6 @@ public class PostActivity extends AppCompatActivity {
                 }
                 etDescription.setText("");
                 ivImage.setImageResource(0);
-            }
-        });
-    }htiknnuluknn
-
-
-    // Testing queries
-    private void queryPosts(){
-        ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
-        query.include(Post.KEY_USER);
-        query.findInBackground(new FindCallback<Post>() {
-            @Override
-            public void done(List<Post> posts, ParseException e) {
-                if (e != null) {
-                    Log.e(TAG, "Error Posting: ", e);
-                }
-                for(Post post: posts){
-                    Log.i(TAG, "Post: " + post.getDescription() + " User: @" + post.getUser().getUsername());
-                }
             }
         });
     }
