@@ -57,7 +57,7 @@ public class PostActivity extends AppCompatActivity {
                         Bitmap takenImage = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
                         ivImage.setImageBitmap(takenImage);
                     } else {
-                        Toast.makeText(PostActivity.this, "Picture wasn't taken!", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(PostActivity.this, "Picture wasn't taken!", Toast.LENGTH_SHORT).show();
                     }
                 }
             });
