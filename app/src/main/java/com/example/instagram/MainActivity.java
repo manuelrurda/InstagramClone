@@ -115,24 +115,4 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
-
-//    // Like Button Listener
-//    public void onClickLike(View view) {
-//        //likePost();
-//        Log.d(TAG, "onClickLike: ");
-//        Toast.makeText(this, "LIKE", Toast.LENGTH_LONG).show();
-//    }
-
-
-//    private void queryUserLike() {
-//        ParseQuery<Like> query = ParseQuery.getQuery(Like.class);
-//        query.whereEqualTo("user", ParseUser.getCurrentUser());
-//        query.countInBackground(((count, e) -> {
-//            if (e != null) {
-//                Log.e(TAG, "Error Retrieving Likes: ", e);
-//            }
-//            Log.d(TAG, "queryUserLike: " + count);
-//        }));
-//    }
 }

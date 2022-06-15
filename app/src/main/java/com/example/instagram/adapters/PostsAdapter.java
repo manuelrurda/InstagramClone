@@ -27,6 +27,8 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
+import org.json.JSONArray;
+
 import java.util.List;
 
 public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> {
@@ -106,41 +108,14 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
                         .into(ivPostProfileImage);
             }
 
-            if(post.isLiked) {
-                btnLike.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        unlikePost(post);
-                        Toast.makeText(context, "LIKE", Toast.LENGTH_LONG).show();
-                    }
-                });
-            }else{
-                btnLike.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        likePost(post);
-                        Toast.makeText(context, "LIKE", Toast.LENGTH_LONG).show();
-                    }
-                });
-            }
-        }
-    }
-
-    private boolean postIsLiked(Post post) {
-        boolean postIsLiked;
-        ParseQuery<Like> query = ParseQuery.getQuery(Like.class);
-        query.whereEqualTo("user", ParseUser.getCurrentUser());
-        query.whereEqualTo("post", post);
-        query.findInBackground(new FindCallback<Like>() {
-            @Override
-            public void done(List<Like> likes, ParseException e) {
-                if (e != null) {
-                    Log.e(TAG, "Error Retrieving Likes: ", e);
+            btnComment.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ParseUser currentUser = ParseUser.getCurrentUser();
+                    JSONArray postsLiked = currentUser.getJSONArray("postsLiked");
                 }
-                postIsLiked = likes.isEmpty();
-            }
-        });
-        return postIsLiked;
+            });
+        }
     }
 
     public void clear(){
@@ -148,18 +123,4 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
         notifyDataSetChanged();
     }
 
-    public void likePost(Post post){
-        Like like = new Like();
-        like.setPost(post);
-        like.setUser(ParseUser.getCurrentUser());
-        like.saveInBackground(new SaveCallback() {
-            @Override
-            public void done(ParseException e) {
-                if (e != null) {
-                    Log.e(TAG, "Error Liking: ", e);
-                }
-
-            }
-        });
-    }
 }
