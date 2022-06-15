@@ -56,19 +56,19 @@
         tools:text="This is an instagram's post very long and interesting description..." />
 
     <ImageButton
-        android:id="@+id/btnLike"
+        android:id="@+id/btnComment"
         android:layout_width="25dp"
         android:layout_height="25dp"
         android:layout_marginStart="20dp"
         android:background="@android:color/transparent"
         android:scaleType="fitXY"
-        app:layout_constraintStart_toEndOf="@+id/btnComment"
-        app:layout_constraintTop_toTopOf="@+id/btnComment"
+        app:layout_constraintStart_toEndOf="@+id/btnLike"
+        app:layout_constraintTop_toTopOf="@+id/btnLike"
         app:srcCompat="@drawable/ufi_comment"
         tools:srcCompat="@drawable/ufi_comment" />
 
     <ImageButton
-        android:id="@+id/btnComment"
+        android:id="@+id/btnLike"
         android:layout_width="25dp"
         android:layout_height="25dp"
         android:layout_marginTop="10dp"
@@ -84,8 +84,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
-        app:layout_constraintStart_toStartOf="@+id/btnComment"
-        app:layout_constraintTop_toBottomOf="@+id/btnComment"
+        app:layout_constraintStart_toStartOf="@+id/btnLike"
+        app:layout_constraintTop_toBottomOf="@+id/btnLike"
         tools:text="135,098 likes" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

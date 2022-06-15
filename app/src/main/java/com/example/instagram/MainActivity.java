@@ -10,14 +10,17 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.example.instagram.adapters.PostsAdapter;
 import com.example.instagram.databinding.ActivityMainBinding;
+import com.example.instagram.models.Like;
 import com.example.instagram.models.Post;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -112,4 +115,24 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+
+//    // Like Button Listener
+//    public void onClickLike(View view) {
+//        //likePost();
+//        Log.d(TAG, "onClickLike: ");
+//        Toast.makeText(this, "LIKE", Toast.LENGTH_LONG).show();
+//    }
+
+
+//    private void queryUserLike() {
+//        ParseQuery<Like> query = ParseQuery.getQuery(Like.class);
+//        query.whereEqualTo("user", ParseUser.getCurrentUser());
+//        query.countInBackground(((count, e) -> {
+//            if (e != null) {
+//                Log.e(TAG, "Error Retrieving Likes: ", e);
+//            }
+//            Log.d(TAG, "queryUserLike: " + count);
+//        }));
+//    }
 }
