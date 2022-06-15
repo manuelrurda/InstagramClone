@@ -8,10 +8,10 @@
 
     <ImageView
         android:id="@+id/ivPostProfileImage"
-        android:layout_width="46dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="30dp"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="10dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:srcCompat="@tools:sample/avatars" />
@@ -34,6 +34,7 @@
         android:layout_width="0dp"
         android:layout_height="300dp"
         android:layout_marginTop="10dp"
+        android:scaleType="centerCrop"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ivPostProfileImage"
@@ -51,7 +52,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/ivPostProfileImage"
-        app:layout_constraintTop_toBottomOf="@+id/btnComment"
+        app:layout_constraintTop_toBottomOf="@+id/tvLikes"
         tools:text="This is an instagram's post very long and interesting description..." />
 
     <ImageButton
@@ -77,5 +78,14 @@
         app:layout_constraintTop_toBottomOf="@+id/ivPostImage"
         app:srcCompat="@drawable/ufi_heart_icon"
         tools:srcCompat="@drawable/ufi_heart" />
+
+    <TextView
+        android:id="@+id/tvLikes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        app:layout_constraintStart_toStartOf="@+id/btnComment"
+        app:layout_constraintTop_toBottomOf="@+id/btnComment"
+        tools:text="135,098 likes" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

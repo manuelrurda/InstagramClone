@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.instagram.R;
 import com.example.instagram.databinding.ItemPostBinding;
 import com.example.instagram.models.Post;
 import com.parse.ParseFile;
@@ -52,24 +53,40 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
 
         private TextView tvPostUsername;
         private TextView tvPostDescription;
+        private TextView tvLikes;
         private ImageView ivPostImage;
+        private ImageView ivPostProfileImage;
 
         public ViewHolder(@NonNull ItemPostBinding binding) {
             super(binding.getRoot());
             tvPostUsername = binding.tvPostUsername;
             tvPostDescription = binding.ivPostDescription;
+            tvLikes = binding.tvLikes;
             ivPostImage = binding.ivPostImage;
+            ivPostProfileImage = binding.ivPostProfileImage;
         }
 
         public void bind(Post post) {
             tvPostUsername.setText(post.getUser().getUsername());
             tvPostDescription.setText(post.getDescription());
+            tvLikes.setText(
+                    context.getResources()
+                            .getString(R.string.likes_label,
+                                    String.valueOf(post.getLikes()) ));
             ParseFile image = post.getImage();
             if (image != null) {
                 Glide.with(context)
                         .load(image.getUrl())
                         .into(ivPostImage);
             }
+            ParseFile profileImage = post.getUser().getParseFile("profileImage");
+            if (profileImage != null) {
+                Glide.with(context)
+                        .load(profileImage.getUrl())
+                        .circleCrop()
+                        .into(ivPostProfileImage);
+            }
+
         }
     }
 
