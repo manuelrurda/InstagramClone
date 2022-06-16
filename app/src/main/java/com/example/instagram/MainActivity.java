@@ -1,6 +1,9 @@
 package com.example.instagram;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -8,19 +11,20 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.example.instagram.adapters.PostsAdapter;
 import com.example.instagram.databinding.ActivityMainBinding;
-import com.example.instagram.models.Like;
+import com.example.instagram.fragments.PostFragment;
 import com.example.instagram.models.Post;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationBarView;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
-import com.parse.SaveCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +40,8 @@ public class MainActivity extends AppCompatActivity {
     private Button btnPostActivity;
     private RecyclerView rvPosts;
     private SwipeRefreshLayout swipeRefresh;
+
+    private BottomNavigationView bottomNavigation;
 
     private PostsAdapter adapter;
     private List<Post> allPosts;
@@ -55,13 +61,6 @@ public class MainActivity extends AppCompatActivity {
                 logoutUser();
             }
         });
-        btnPostActivity = binding.btnPostActivity;
-        btnPostActivity.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                goPostActivity();
-            }
-        });
 
         swipeRefresh = binding.swipeRefresh;
         swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -70,7 +69,40 @@ public class MainActivity extends AppCompatActivity {
         });
 
         setRecyclerView();
+
+        final FragmentManager fragmentManager = getSupportFragmentManager();
+        final Fragment postFragment = new PostFragment();
+//        final Fragment fragment2 = new SecondFragment();
+//        final Fragment fragment3 = new ThirdFragment();
+
+        bottomNavigation = binding.bottomNavigation;
+        bottomNavigation.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()){
+                    case R.id.actionHome:
+                        replaceFragment(new Fragment());
+                        break;
+
+                    case R.id.actionPost:
+                        replaceFragment(postFragment);
+                        break;
+
+                    case R.id.actionProfile:
+                        replaceFragment(new Fragment());
+                        break;
+                }
+                return true;
+            }
+           private void replaceFragment(Fragment fragment) {
+               fragmentManager.beginTransaction()
+                       .replace(binding.flContainer.getId(), fragment)
+                       .commit();
+           }
+        });
+
         queryPosts();
+
     }
 
     private void fetchPostsAsync() {
@@ -85,12 +117,7 @@ public class MainActivity extends AppCompatActivity {
         adapter = new PostsAdapter(this, allPosts);
         rvPosts.setAdapter(adapter);
         rvPosts.setLayoutManager(new LinearLayoutManager(this));
-    }
-
-    private void goPostActivity() {
-        Intent intent = new Intent(MainActivity.this, PostActivity.class);
-        startActivity(intent);
-    }
+    }hrdrfjuurr
 
     private void logoutUser() {
         ParseUser.logOutInBackground();
