@@ -5,6 +5,7 @@ import android.util.Log;
 import com.parse.ParseClassName;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import java.util.concurrent.atomic.AtomicInteger;
@@ -17,6 +18,7 @@ public class Post extends ParseObject {
     public static final String KEY_IMAGE = "image";
     public static final String KEY_USER = "user";
     public static final String KEY_LIKES = "likes";
+    private static final int LIKE_UNIT = 1;
 
     public boolean isLiked = false;
 
@@ -47,15 +49,23 @@ public class Post extends ParseObject {
     public int getLikes() {
         return getNumber(KEY_LIKES).intValue();
     }
-//    public int queryLikes() {
-//        ParseQuery<Like> query = ParseQuery.getQuery(Like.class);
-//        query.whereEqualTo("post", this);
-//        query.countInBackground(((count, e) -> {
-//            if (e != null) {
-//                Log.e(TAG, "Error Retrieving Likes: ", e);
-//                return;
-//            }
-//        }));
-//    }
+
+    public void setLikeState(boolean likeState) {isLiked = likeState;}
+
+    public void updateLikes() {
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Post");
+        query.getInBackground(getObjectId(), (post, e) -> {
+            if (e != null) {
+                Log.e(TAG, "Error Updating Like Count: ", e);
+                return;
+            }
+            Log.d(TAG, "updateLikes: num of likes: " + post.getNumber("likes"));
+            post.put(KEY_LIKES, (post.getNumber("likes").intValue() + ((isLiked)?1:-1)*LIKE_UNIT));
+            post.saveInBackground();
+            Log.d(TAG, "updateLikes: UPDATED: " + post.getNumber("likes"));
+        });
+    }
+
+    public void changeLikedState() {isLiked = !isLiked;}
 
 }

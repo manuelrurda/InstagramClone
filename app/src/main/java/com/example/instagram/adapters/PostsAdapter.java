@@ -19,15 +19,21 @@ import com.example.instagram.R;
 import com.example.instagram.databinding.ItemPostBinding;
 import com.example.instagram.models.Like;
 import com.example.instagram.models.Post;
+import com.parse.CountCallback;
+import com.parse.DeleteCallback;
 import com.parse.FindCallback;
+import com.parse.GetCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseFile;
+import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import java.util.List;
+
+import javax.security.auth.callback.Callback;
 
 public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> {
 
@@ -106,41 +112,68 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
                         .into(ivPostProfileImage);
             }
 
-            if(post.isLiked) {
-                btnLike.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        unlikePost(post);
-                        Toast.makeText(context, "LIKE", Toast.LENGTH_LONG).show();
-                    }
-                });
-            }else{
-                btnLike.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        likePost(post);
-                        Toast.makeText(context, "LIKE", Toast.LENGTH_LONG).show();
-                    }
-                });
-            }
-        }
-    }
+            bindLikesLabel(post);
+            bindLikeButton(post);
 
-    private boolean postIsLiked(Post post) {
-        boolean postIsLiked;
-        ParseQuery<Like> query = ParseQuery.getQuery(Like.class);
-        query.whereEqualTo("user", ParseUser.getCurrentUser());
-        query.whereEqualTo("post", post);
-        query.findInBackground(new FindCallback<Like>() {
-            @Override
-            public void done(List<Like> likes, ParseException e) {
-                if (e != null) {
-                    Log.e(TAG, "Error Retrieving Likes: ", e);
+        }
+
+        private void bindLikesLabel(Post post) {
+            ParseQuery<Like> query = ParseQuery.getQuery(Like.class);
+            query.whereEqualTo("post", post);
+            query.countInBackground(new CountCallback() {
+                @Override
+                public void done(int count, ParseException e) {
+                    if(e != null){
+                        Log.e(TAG, "LikeLabel: Error retrieving like data: ", e);
+                    }
+                    tvLikes.setText(context.getResources()
+                            .getString(R.string.likes_label,
+                                    String.valueOf(count)));
                 }
-                postIsLiked = likes.isEmpty();
-            }
-        });
-        return postIsLiked;
+            });
+        }
+
+        private void bindLikeButton(Post post) {
+            ParseQuery<Like> query = ParseQuery.getQuery(Like.class);
+            query.whereEqualTo("user", ParseUser.getCurrentUser());
+            query.whereEqualTo("post", post);
+            query.findInBackground(new FindCallback<Like>() {
+                @Override
+                public void done(List<Like> like, ParseException e) {
+                    if(e != null){
+                        Log.e(TAG, "LikeButton: Error retrieving like data: ", e);
+                    }
+                    Log.d(TAG, "LIKE MATCHING POST AND USERNAME: " + like.toString());
+
+                    // Post has been liked by user
+                    if(!like.isEmpty()){
+                        post.setLikeState(true);
+                        btnLike.setImageResource(R.drawable.ufi_heart_active);
+                    }else{ // Post not liked by user
+                        post.setLikeState(false);
+                        btnLike.setImageResource(R.drawable.ufi_heart);
+                    }
+                }
+            });
+            setLikeListener(post);
+        }
+
+        private void setLikeListener(Post post) {
+            btnLike.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    post.updateLikes();
+                    if(post.isLiked){
+                        unlikePost(post);
+                        btnLike.setImageResource(R.drawable.ufi_heart);
+                    }else{
+                        likePost(post);
+                        btnLike.setImageResource(R.drawable.ufi_heart_active);
+                    }
+                    post.changeLikedState();
+                }
+            });
+        }
     }
 
     public void clear(){
@@ -158,7 +191,23 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
                 if (e != null) {
                     Log.e(TAG, "Error Liking: ", e);
                 }
+            }
+        });
+    }
 
+    public void unlikePost(Post post){
+        ParseQuery<Like> query = ParseQuery.getQuery(Like.class);
+        query.whereEqualTo("user", ParseUser.getCurrentUser());
+        query.whereEqualTo("post", post);
+        query.findInBackground(new FindCallback<Like>() {
+            @Override
+            public void done(List<Like> like, ParseException e) {
+                like.get(0).deleteInBackground(new DeleteCallback() {
+                    @Override
+                    public void done(ParseException e) {
+
+                    }
+                });
             }
         });
     }
