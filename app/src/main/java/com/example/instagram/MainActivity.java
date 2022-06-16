@@ -17,6 +17,7 @@ import android.widget.Button;
 
 import com.example.instagram.adapters.PostsAdapter;
 import com.example.instagram.databinding.ActivityMainBinding;
+import com.example.instagram.fragments.HomeFragment;
 import com.example.instagram.fragments.PostFragment;
 import com.example.instagram.models.Post;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -32,19 +33,12 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     public static final String TAG = "MainActivity";
-    private static final int INITIAL_POST_AMOUNT = 20;
 
     private ActivityMainBinding binding;
 
     private Button btnLogout;
-    private Button btnPostActivity;
-    private RecyclerView rvPosts;
-    private SwipeRefreshLayout swipeRefresh;
 
     private BottomNavigationView bottomNavigation;
-
-    private PostsAdapter adapter;
-    private List<Post> allPosts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,84 +56,47 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        swipeRefresh = binding.swipeRefresh;
-        swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {fetchPostsAsync();}
-        });
-
-        setRecyclerView();
-
         final FragmentManager fragmentManager = getSupportFragmentManager();
+        final Fragment homeFragment = new HomeFragment();
         final Fragment postFragment = new PostFragment();
-//        final Fragment fragment2 = new SecondFragment();
 //        final Fragment fragment3 = new ThirdFragment();
 
+        // Initial fragment
+        replaceFragment(fragmentManager, homeFragment);
         bottomNavigation = binding.bottomNavigation;
         bottomNavigation.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()){
                     case R.id.actionHome:
-                        replaceFragment(new Fragment());
+                        replaceFragment(fragmentManager, homeFragment);
                         break;
 
                     case R.id.actionPost:
-                        replaceFragment(postFragment);
+                        replaceFragment(fragmentManager, postFragment);
                         break;
 
                     case R.id.actionProfile:
-                        replaceFragment(new Fragment());
+                        replaceFragment(fragmentManager, new Fragment());
                         break;
+
                 }
                 return true;
             }
-           private void replaceFragment(Fragment fragment) {
-               fragmentManager.beginTransaction()
-                       .replace(binding.flContainer.getId(), fragment)
-                       .commit();
-           }
         });
 
-        queryPosts();
-
     }
 
-    private void fetchPostsAsync() {
-        adapter.clear();
-        queryPosts();
-        swipeRefresh.setRefreshing(false);
+    private void replaceFragment(FragmentManager fragmentManager, Fragment fragment) {
+        fragmentManager.beginTransaction()
+                .replace(binding.flContainer.getId(), fragment)
+                .commit();
     }
-
-    private void setRecyclerView() {
-        rvPosts = binding.rvPosts;
-        allPosts = new ArrayList<>();
-        adapter = new PostsAdapter(this, allPosts);
-        rvPosts.setAdapter(adapter);
-        rvPosts.setLayoutManager(new LinearLayoutManager(this));
-    }hrdrfjuurr
 
     private void logoutUser() {
         ParseUser.logOutInBackground();
         Intent intent = new Intent(MainActivity.this, LoginActivity.class);
         startActivity(intent);
         finish();
-    }
-
-    private void queryPosts(){
-        ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
-        query.include(Post.KEY_USER);
-        query.setLimit(INITIAL_POST_AMOUNT);
-        query.addDescendingOrder("createdAt");
-        query.findInBackground(new FindCallback<Post>() {
-            @Override
-            public void done(List<Post> posts, ParseException e) {
-                if (e != null) {
-                    Log.e(TAG, "Error Posting: ", e);
-                }
-                allPosts.addAll(posts);
-                adapter.notifyDataSetChanged();
-            }
-        });
     }
 }

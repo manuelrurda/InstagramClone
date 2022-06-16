@@ -119,7 +119,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
 
         private void bindLikesLabel(Post post) {
             ParseQuery<Like> query = ParseQuery.getQuery(Like.class);
-            query.whereEqualTo("post", post);
+            query.whereEqualTo(Like.KEY_POST, post);
             query.countInBackground(new CountCallback() {
                 @Override
                 public void done(int count, ParseException e) {
@@ -135,8 +135,8 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
 
         private void bindLikeButton(Post post) {
             ParseQuery<Like> query = ParseQuery.getQuery(Like.class);
-            query.whereEqualTo("user", ParseUser.getCurrentUser());
-            query.whereEqualTo("post", post);
+            query.whereEqualTo(Like.KEY_USER, ParseUser.getCurrentUser());
+            query.whereEqualTo(Like.KEY_POST, post);
             query.findInBackground(new FindCallback<Like>() {
                 @Override
                 public void done(List<Like> like, ParseException e) {
@@ -197,8 +197,8 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
 
     public void unlikePost(Post post){
         ParseQuery<Like> query = ParseQuery.getQuery(Like.class);
-        query.whereEqualTo("user", ParseUser.getCurrentUser());
-        query.whereEqualTo("post", post);
+        query.whereEqualTo(Like.KEY_USER, ParseUser.getCurrentUser());
+        query.whereEqualTo(Like.KEY_POST, post);
         query.findInBackground(new FindCallback<Like>() {
             @Override
             public void done(List<Like> like, ParseException e) {
