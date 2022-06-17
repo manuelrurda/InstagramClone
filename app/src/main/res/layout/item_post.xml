@@ -88,4 +88,14 @@
         app:layout_constraintTop_toBottomOf="@+id/btnLike"
         tools:text="135,098 likes" />
 
+    <TextView
+        android:id="@+id/tvTimeStamp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="@+id/ivPostDescription"
+        app:layout_constraintTop_toBottomOf="@+id/ivPostDescription"
+        tools:text="5h ago" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
