@@ -59,10 +59,8 @@ public class Post extends ParseObject {
                 Log.e(TAG, "Error Updating Like Count: ", e);
                 return;
             }
-            Log.d(TAG, "updateLikes: num of likes: " + post.getNumber("likes"));
             post.put(KEY_LIKES, (post.getNumber("likes").intValue() + ((isLiked)?1:-1)*LIKE_UNIT));
             post.saveInBackground();
-            Log.d(TAG, "updateLikes: UPDATED: " + post.getNumber("likes"));
         });
     }
 

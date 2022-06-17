@@ -140,8 +140,6 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
                     if(e != null){
                         Log.e(TAG, "LikeButton: Error retrieving like data: ", e);
                     }
-                    Log.d(TAG, "LIKE MATCHING POST AND USERNAME: " + like.toString());
-
                     // Post has been liked by user
                     if(!like.isEmpty()){
                         post.setLikeState(true);

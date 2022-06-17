@@ -82,7 +82,6 @@ public class ProfileFragment extends Fragment {
     }
 
     private void setRecyclerView(View view) {
-        Log.d(TAG, "done:");
         rvProfilePosts = view.findViewById(R.id.rvProfilePosts);
         allUserPosts = new ArrayList<>();
         adapter = new ProfileAdapter(getContext(), allUserPosts);
@@ -93,7 +92,6 @@ public class ProfileFragment extends Fragment {
     protected void queryPosts() {
         ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
         query.include(Post.KEY_USER);
-        Log.d(TAG, "done: BEFORE QUERY");
         query.setLimit(INITIAL_POST_AMOUNT);
         query.whereEqualTo(Post.KEY_USER, ParseUser.getCurrentUser());
         query.addDescendingOrder("createdAt");
@@ -103,7 +101,6 @@ public class ProfileFragment extends Fragment {
                 if (e != null) {
                     Log.e(TAG, "Error Posting: ", e);
                 }
-                Log.d(TAG, "done: PROFILE POSTS");
                 allUserPosts.addAll(posts);
                 adapter.notifyDataSetChanged();
                 tvProfilePostAmount.setText(String.valueOf(allUserPosts.size()));
