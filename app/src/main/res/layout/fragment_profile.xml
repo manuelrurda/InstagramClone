@@ -8,19 +8,59 @@
 
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/tvProfileUsername"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TextView"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="16dp" />
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="15dp"
+        android:fontFamily="@font/roboto_bold"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="manuelrurda" />
 
     <ImageView
-        android:id="@+id/imageView2"
+        android:id="@+id/ivProfileProfileImage"
         android:layout_width="70dp"
         android:layout_height="70dp"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="46dp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintStart_toStartOf="@+id/tvProfileUsername"
+        app:layout_constraintTop_toBottomOf="@+id/tvProfileUsername"
         tools:src="@tools:sample/avatars" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvProfilePosts"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="30dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ivProfileProfileImage" />
+
+    <TextView
+        android:id="@+id/tvPostsLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:fontFamily="@font/roboto_bold"
+        android:text="@string/posts_label"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@+id/ivProfileProfileImage"
+        app:layout_constraintStart_toEndOf="@+id/ivProfileProfileImage" />
+
+    <TextView
+        android:id="@+id/tvProfilePostAmount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/roboto"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/tvPostsLabel"
+        app:layout_constraintEnd_toEndOf="@+id/tvPostsLabel"
+        app:layout_constraintStart_toStartOf="@+id/tvPostsLabel"
+        tools:text="14" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

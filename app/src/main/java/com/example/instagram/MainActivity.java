@@ -4,31 +4,21 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
-import com.example.instagram.adapters.PostsAdapter;
 import com.example.instagram.databinding.ActivityMainBinding;
 import com.example.instagram.fragments.HomeFragment;
 import com.example.instagram.fragments.PostFragment;
-import com.example.instagram.models.Post;
+import com.example.instagram.fragments.ProfileFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
-import com.parse.FindCallback;
-import com.parse.ParseException;
-import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
-import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -59,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
         final FragmentManager fragmentManager = getSupportFragmentManager();
         final Fragment homeFragment = new HomeFragment();
         final Fragment postFragment = new PostFragment();
-//        final Fragment fragment3 = new ThirdFragment();
+        final Fragment profileFragment = new ProfileFragment();
 
         // Initial fragment
         replaceFragment(fragmentManager, homeFragment);
@@ -77,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
                         break;
 
                     case R.id.actionProfile:
-                        replaceFragment(fragmentManager, new Fragment());
+                        replaceFragment(fragmentManager, profileFragment);
                         break;
 
                 }

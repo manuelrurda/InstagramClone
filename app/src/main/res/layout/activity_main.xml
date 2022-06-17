@@ -15,9 +15,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/logout_label"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolBar"
+        tools:layout_editor_absoluteY="40dp"
         tools:text="Logout" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView

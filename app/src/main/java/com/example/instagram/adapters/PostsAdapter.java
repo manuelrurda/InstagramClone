@@ -49,7 +49,6 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
         // This is how to use view binding in adapter
         ItemPostBinding binding = ItemPostBinding.inflate(LayoutInflater
                 .from(parent.getContext()), parent, false);
@@ -176,11 +175,6 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
         }
     }
 
-    public void clear(){
-        posts.clear();
-        notifyDataSetChanged();
-    }
-
     public void likePost(Post post){
         Like like = new Like();
         like.setPost(post);
@@ -200,15 +194,22 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
         query.whereEqualTo(Like.KEY_USER, ParseUser.getCurrentUser());
         query.whereEqualTo(Like.KEY_POST, post);
         query.findInBackground(new FindCallback<Like>() {
+
+            // TODO: move like count server side
+            // TODO: add null detection
             @Override
             public void done(List<Like> like, ParseException e) {
                 like.get(0).deleteInBackground(new DeleteCallback() {
                     @Override
                     public void done(ParseException e) {
-
                     }
                 });
             }
         });
+    }
+
+    public void clear(){
+        posts.clear();
+        notifyDataSetChanged();
     }
 }

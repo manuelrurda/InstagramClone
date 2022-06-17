@@ -1,50 +1,53 @@
 package com.example.instagram.fragments;
 
-import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.FileProvider;
-import androidx.fragment.app.Fragment;
 
-import android.os.Environment;
-import android.provider.MediaStore;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Toast;
+import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.instagram.R;
-import com.example.instagram.databinding.FragmentPostBinding;
+import com.example.instagram.adapters.PostsAdapter;
+import com.example.instagram.adapters.ProfileAdapter;
 import com.example.instagram.models.Post;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
-import com.parse.SaveCallback;
 
-import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
-public class ProfileFragment extends HomeFragment {
+public class ProfileFragment extends Fragment {
 
     private static final int INITIAL_POST_AMOUNT = 20;
     private static final String TAG = "ProfileFragment";
+    private static final int GRID_COLUMNS = 3;
+
+    private TextView tvProfileUsername;
+    private ImageView ivProfileProfileImage;
+    private TextView tvProfilePostAmount;
+
+    private RecyclerView rvProfilePosts;
+    private ProfileAdapter adapter;
+    private List<Post> allUserPosts;
+
+    private final ParseUser currentUser = ParseUser.getCurrentUser();
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -60,12 +63,37 @@ public class ProfileFragment extends HomeFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        tvProfileUsername = view.findViewById(R.id.tvProfileUsername);
+        tvProfileUsername.setText(currentUser.getUsername());
+
+        ivProfileProfileImage = view.findViewById(R.id.ivProfileProfileImage);
+        ParseFile profileImage = currentUser.getParseFile("profileImage");
+        if (profileImage != null) {
+            Glide.with(getContext())
+                    .load(profileImage.getUrl())
+                    .circleCrop()
+                    .into(ivProfileProfileImage);
+        }
+
+        tvProfilePostAmount = view.findViewById(R.id.tvProfilePostAmount);
+        setRecyclerView(view);
+        queryPosts();
     }
 
-    @Override
+    private void setRecyclerView(View view) {
+        Log.d(TAG, "done:");
+        rvProfilePosts = view.findViewById(R.id.rvProfilePosts);
+        allUserPosts = new ArrayList<>();
+        adapter = new ProfileAdapter(getContext(), allUserPosts);
+        rvProfilePosts.setAdapter(adapter);
+        rvProfilePosts.setLayoutManager(new GridLayoutManager(getActivity(), GRID_COLUMNS));
+    }
+
     protected void queryPosts() {
         ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
         query.include(Post.KEY_USER);
+        Log.d(TAG, "done: BEFORE QUERY");
         query.setLimit(INITIAL_POST_AMOUNT);
         query.whereEqualTo(Post.KEY_USER, ParseUser.getCurrentUser());
         query.addDescendingOrder("createdAt");
@@ -75,8 +103,10 @@ public class ProfileFragment extends HomeFragment {
                 if (e != null) {
                     Log.e(TAG, "Error Posting: ", e);
                 }
-                allPosts.addAll(posts);
+                Log.d(TAG, "done: PROFILE POSTS");
+                allUserPosts.addAll(posts);
                 adapter.notifyDataSetChanged();
+                tvProfilePostAmount.setText(String.valueOf(allUserPosts.size()));
             }
         });
     }

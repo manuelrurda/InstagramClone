@@ -28,8 +28,9 @@ public class HomeFragment extends Fragment {
 
     private static final int INITIAL_POST_AMOUNT = 20;
     private static final String TAG = "HomeFragment";
-    protected PostsAdapter adapter;
-    protected List<Post> allPosts;
+
+    private PostsAdapter adapter;
+    private List<Post> allPosts;
     private RecyclerView rvPosts;
     private SwipeRefreshLayout swipeRefresh;
 
@@ -67,7 +68,7 @@ public class HomeFragment extends Fragment {
     }
 
     private void setRecyclerView(View view) {
-        rvPosts = rvPosts = view.findViewById(R.id.rvPosts);
+        rvPosts = view.findViewById(R.id.rvPosts);
         allPosts = new ArrayList<>();
         adapter = new PostsAdapter(getContext(), allPosts);
         rvPosts.setAdapter(adapter);
