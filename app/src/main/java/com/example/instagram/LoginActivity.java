@@ -60,6 +60,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String username = etUsername.getText().toString();
                 String password = etPassword.getText().toString();
+                // Check empty fields
                 if(!username.equals("") && !password.equals("")){
                     signupUser(username, password);
                 }else{
@@ -81,8 +82,10 @@ public class LoginActivity extends AppCompatActivity {
             public void done(ParseException e) {
                 if(e != null){
                     Log.e(TAG, "Error in signing up: ", e);
+                }else{
+                    // Login after signing up so user doesn't need to click login after signing up
+                    loginUser(username, password);
                 }
-                loginUser(username, password);
             }
         });
     }
