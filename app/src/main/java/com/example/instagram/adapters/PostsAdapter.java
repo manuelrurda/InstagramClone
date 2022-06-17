@@ -192,10 +192,11 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
         query.findInBackground(new FindCallback<Like>() {
 
             // TODO: move like count server side
-            // TODO: add null detection
             @Override
             public void done(List<Like> like, ParseException e) {
-                like.get(0).deleteInBackground();
+                if(!like.isEmpty()){
+                    like.get(0).deleteInBackground();
+                }
             }
         });
     }
