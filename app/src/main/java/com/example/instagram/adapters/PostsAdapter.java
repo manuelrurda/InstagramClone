@@ -190,7 +190,6 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
         query.whereEqualTo(Like.KEY_USER, ParseUser.getCurrentUser());
         query.whereEqualTo(Like.KEY_POST, post);
         query.findInBackground(new FindCallback<Like>() {
-
             // TODO: move like count server side
             @Override
             public void done(List<Like> like, ParseException e) {
