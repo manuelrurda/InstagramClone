@@ -10,8 +10,10 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 import com.example.instagram.databinding.ActivityMainBinding;
+import com.example.instagram.databinding.ToolBarBinding;
 import com.example.instagram.fragments.HomeFragment;
 import com.example.instagram.fragments.PostFragment;
 import com.example.instagram.fragments.ProfileFragment;
@@ -26,8 +28,6 @@ public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
 
-    private Button btnLogout;
-
     private BottomNavigationView bottomNavigation;
 
     @Override
@@ -38,13 +38,7 @@ public class MainActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
 
-        btnLogout = binding.btnLogout;
-        btnLogout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                logoutUser();
-            }
-        });
+//        btnLogout = ToolBarBinding.inflate(getLayoutInflater()).btnLogout;
 
         final FragmentManager fragmentManager = getSupportFragmentManager();
         final Fragment homeFragment = new HomeFragment();
@@ -74,7 +68,6 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
-
     }
 
     private void replaceFragment(FragmentManager fragmentManager, Fragment fragment) {
@@ -83,10 +76,4 @@ public class MainActivity extends AppCompatActivity {
                 .commit();
     }
 
-    private void logoutUser() {
-        ParseUser.logOutInBackground();
-        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-        startActivity(intent);
-        finish();
-    }
 }

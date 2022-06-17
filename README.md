@@ -12,7 +12,7 @@ The following **required** functionality is completed:
 - [x] User can sign up to create a new account using Parse authentication
 - [x] User can log in to their account
 - [x] The current signed in user is persisted across app restarts
-- [ ] User can log out of their account
+- [x] User can log out of their account
 - [x] User can take a photo, add a caption, and post it to "Instagram"
 - [x] User can view the last 20 posts submitted to "Instagram"
 - [x] User can pull to refresh the last 20 posts submitted to "Instagram"

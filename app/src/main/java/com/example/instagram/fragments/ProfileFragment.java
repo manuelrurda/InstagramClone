@@ -1,5 +1,6 @@
 package com.example.instagram.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 
@@ -16,10 +17,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.instagram.LoginActivity;
+import com.example.instagram.MainActivity;
 import com.example.instagram.R;
 import com.example.instagram.adapters.PostsAdapter;
 import com.example.instagram.adapters.ProfileAdapter;
@@ -47,6 +52,8 @@ public class ProfileFragment extends Fragment {
     private ProfileAdapter adapter;
     private List<Post> allUserPosts;
 
+    private Button btnLogout;
+
     private final ParseUser currentUser = ParseUser.getCurrentUser();
 
     public ProfileFragment() {
@@ -63,6 +70,14 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        btnLogout = view.findViewById(R.id.btnLogout);
+        btnLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                logoutUser();
+            }
+        });
 
         tvProfileUsername = view.findViewById(R.id.tvProfileUsername);
         tvProfileUsername.setText(currentUser.getUsername());
@@ -107,5 +122,13 @@ public class ProfileFragment extends Fragment {
             }
         });
     }
+
+    private void logoutUser() {
+        ParseUser.logOutInBackground();
+        Intent intent = new Intent(getContext(), LoginActivity.class);
+        startActivity(intent);
+        this.getActivity().finish();
+    }
 }
+
 

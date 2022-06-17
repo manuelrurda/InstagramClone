@@ -195,11 +195,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
             // TODO: add null detection
             @Override
             public void done(List<Like> like, ParseException e) {
-                like.get(0).deleteInBackground(new DeleteCallback() {
-                    @Override
-                    public void done(ParseException e) {
-                    }
-                });
+                like.get(0).deleteInBackground();
             }
         });
     }

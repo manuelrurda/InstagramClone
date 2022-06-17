@@ -36,8 +36,10 @@
         android:layout_marginTop="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ivProfileProfileImage" />
+        app:layout_constraintTop_toBottomOf="@+id/ivProfileProfileImage"
+        app:layout_constraintVertical_bias="1.0" />
 
     <TextView
         android:id="@+id/tvPostsLabel"
@@ -62,5 +64,20 @@
         app:layout_constraintEnd_toEndOf="@+id/tvPostsLabel"
         app:layout_constraintStart_toStartOf="@+id/tvPostsLabel"
         tools:text="14" />
+
+    <Button
+        android:id="@+id/btnLogout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:fontFamily="@font/roboto"
+        android:text="@string/logout_label"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tvProfileUsername"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.914"
+        app:layout_constraintStart_toEndOf="@+id/tvProfileUsername"
+        app:layout_constraintTop_toTopOf="@+id/tvProfileUsername"
+        app:layout_constraintVertical_bias="0.523" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

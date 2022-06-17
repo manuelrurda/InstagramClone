@@ -10,16 +10,6 @@
         android:id="@+id/toolBar"
         layout="@layout/tool_bar" />
 
-    <Button
-        android:id="@+id/btnLogout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/logout_label"
-        android:visibility="visible"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="40dp"
-        tools:text="Logout" />
-
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigation"
         android:layout_width="match_parent"
